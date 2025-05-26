@@ -1,582 +1,906 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>احبك امي</title>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاتم - نظام نقاط البيع</title>
+    <link rel="icon" href="72.png" type="image/png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 50%, #e37da2 100%);
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: 'Tajawal', Arial, sans-serif;
-      position: relative;
-      color: white;
-    }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1f2937;
+            color: white;
+            padding: 1rem;
+            direction: rtl;
+        }
 
-    .container {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      z-index: 2;
-    }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
 
-    .big-heart {
-      position: relative;
-      width: 300px;
-      height: 300px;
-      margin-bottom: 30px;
-      transform-style: preserve-3d;
-      animation: heartbeat 1.5s infinite alternate;
-      filter: drop-shadow(0 0 15px rgba(255, 0, 98, 0.5));
-    }
+        .btn {
+            background-color: #14b8a6;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
 
-    @keyframes heartbeat {
-      0% {
-        transform: scale(1);
-      }
-      100% {
-        transform: scale(1.1);
-      }
-    }
+        .btn:hover {
+            background-color: #0f766e;
+        }
 
-    .heart {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      background: #ff0844;
-      transform: rotate(45deg);
-      box-shadow: 0 0 40px rgba(255, 8, 68, 0.5);
-      animation: float 6s infinite;
-    }
+        .btn:disabled {
+            background-color: #6b7280;
+            cursor: not-allowed;
+        }
 
-    .heart::before,
-    .heart::after {
-      content: "";
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      background: #ff0844;
-      border-radius: 50%;
-    }
+        .btn-small {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
 
-    .heart::before {
-      top: -15px;
-      left: 0;
-    }
+        .btn-danger {
+            background-color: #dc2626;
+        }
 
-    .heart::after {
-      left: -15px;
-      top: 0;
-    }
+        .btn-danger:hover {
+            background-color: #b91c1c;
+        }
 
-    @keyframes float {
-      0%, 100% {
-        transform: translateY(0) rotate(45deg) scale(1);
-        opacity: 1;
-        filter: hue-rotate(0deg);
-      }
-      25% {
-        transform: translateY(-20px) rotate(65deg) scale(1.1);
-        filter: hue-rotate(45deg);
-      }
-      50% {
-        transform: translateY(0) rotate(45deg) scale(1);
-        filter: hue-rotate(90deg);
-      }
-      75% {
-        transform: translateY(20px) rotate(25deg) scale(0.9);
-        filter: hue-rotate(45deg);
-      }
-    }
+        .btn-success {
+            background-color: #16a34a;
+        }
 
-    .title {
-      position: absolute;
-      top: 40px;
-      width: 100%;
-      text-align: center;
-      color: white;
-      font-size: 4em;
-      font-weight: bold;
-      text-shadow: 0 0 20px rgba(0, 0, 0, 0.3), 0 0 40px rgba(255, 0, 98, 0.3);
-      animation: fadeIn 2s forwards, glow 3s infinite alternate;
-      letter-spacing: 2px;
-    }
+        .btn-success:hover {
+            background-color: #15803d;
+        }
 
-    @keyframes glow {
-      0% {
-        text-shadow: 0 0 20px rgba(0, 0, 0, 0.3), 0 0 40px rgba(255, 0, 98, 0.3);
-      }
-      100% {
-        text-shadow: 0 0 25px rgba(0, 0, 0, 0.4), 0 0 50px rgba(255, 0, 98, 0.5);
-      }
-    }
+        .datetime {
+            text-align: right;
+            margin-bottom: 1.5rem;
+            color: #fbbf24;
+        }
 
-    .message {
-      color: white;
-      font-size: 1.6em;
-      text-align: center;
-      text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-      max-width: 80%;
-      line-height: 1.8;
-      animation: fadeInUp 2s forwards;
-      animation-delay: 1s;
-      margin-top: 20px;
-      z-index: 2;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 20px 30px;
-      border-radius: 20px;
-      backdrop-filter: blur(5px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
+        .datetime div {
+            font-size: 1.125rem;
+            font-weight: bold;
+        }
 
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+        }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
 
-    .particles {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-    }
+        .section {
+            background-color: #374151;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+        }
 
-    .particle {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      background: rgba(255, 255, 255, 0.5);
-      border-radius: 50%;
-      animation: particleFloat linear infinite;
-    }
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
 
-    @keyframes particleFloat {
-      0% {
-        transform: translateY(100vh);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-      }
-      90% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-20px);
-        opacity: 0;
-      }
-    }
+        /* Calculator Styles */
+        .calculator-display {
+            background-color: #000;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
 
-    /* Random floating hearts */
-    .floating-hearts {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
-    }
+        .calculator-screen {
+            color: white;
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
 
-    .floating-heart {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: rgba(255, 255, 255, 0.8);
-      transform: rotate(45deg);
-      animation: floatRandom linear infinite;
-    }
+        .calculator-result {
+            color: white;
+            font-size: 1.5rem;
+            font-family: monospace;
+        }
 
-    .floating-heart::before,
-    .floating-heart::after {
-      content: "";
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: rgba(255, 255, 255, 0.8);
-      border-radius: 50%;
-    }
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+        }
 
-    .floating-heart::before {
-      top: -10px;
-      left: 0;
-    }
+        .calc-btn {
+            background-color: #14b8a6;
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-size: 1.25rem;
+            height: 3rem;
+        }
 
-    .floating-heart::after {
-      left: -10px;
-      top: 0;
-    }
+        .calc-btn:hover {
+            background-color: #0f766e;
+        }
 
-    @keyframes floatRandom {
-      0% {
-        transform: translateY(100vh) translateX(0) rotate(45deg);
-        opacity: 0;
-      }
-      10% {
-        opacity: 0.8;
-      }
-      90% {
-        opacity: 0.8;
-      }
-      100% {
-        transform: translateY(-100px) translateX(var(--translate-x)) rotate(45deg);
-        opacity: 0;
-      }
-    }
+        .calc-btn-clear {
+            grid-column: span 4;
+        }
 
-    .heart-trail {
-      position: absolute;
-      pointer-events: none;
-      z-index: 3;
-    }
+        /* Paper Section */
+        .paper-section {
+            margin-bottom: 1rem;
+        }
 
-    .heart-trail .mini-heart {
-      position: absolute;
-      width: 15px;
-      height: 15px;
-      background: white;
-      transform: rotate(45deg);
-      opacity: 0.8;
-      animation: fadeOut 1s forwards;
-    }
+        .paper-item {
+            margin-bottom: 1rem;
+        }
 
-    .heart-trail .mini-heart::before,
-    .heart-trail .mini-heart::after {
-      content: "";
-      position: absolute;
-      width: 15px;
-      height: 15px;
-      background: white;
-      border-radius: 50%;
-    }
+        .paper-label {
+            color: white;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
 
-    .heart-trail .mini-heart::before {
-      top: -7.5px;
-      left: 0;
-    }
+        .paper-input-group {
+            display: flex;
+            gap: 0.5rem;
+        }
 
-    .heart-trail .mini-heart::after {
-      left: -7.5px;
-      top: 0;
-    }
+        .input {
+            background-color: #4b5563;
+            color: white;
+            border: 1px solid #6b7280;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            flex: 1;
+        }
 
-    @keyframes fadeOut {
-      to {
-        opacity: 0;
-        transform: rotate(45deg) scale(0.5);
-      }
-    }
+        .paper-price {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.25rem;
+        }
 
-    /* Overlay gradient */
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(ellipse at center, rgba(255,255,255,0) 0%, rgba(255,20,147,0.2) 100%);
-      pointer-events: none;
-      z-index: 1;
-    }
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+        }
 
-    /* Responsive styles */
-    @media (max-width: 768px) {
-      .title {
-        font-size: 3em;
-        top: 30px;
-      }
-      
-      .message {
-        font-size: 1.3em;
-        max-width: 90%;
-        padding: 15px 20px;
-      }
-      
-      .big-heart {
-        width: 250px;
-        height: 250px;
-      }
-    }
-  </style>
+        .product-btn {
+            background-color: #4b5563;
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            height: 5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        .product-btn:hover {
+            background-color: #6b7280;
+        }
+
+        .product-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .product-name {
+            font-size: 0.75rem;
+        }
+
+        .product-price {
+            font-size: 0.75rem;
+            color: #10b981;
+        }
+
+        /* Invoice */
+        .invoice-total {
+            color: #10b981;
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .invoice-library {
+            color: #10b981;
+            font-size: 1.125rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .cart-items {
+            max-height: 15rem;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        .cart-item {
+            background-color: #4b5563;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            color: white;
+            font-weight: 500;
+        }
+
+        .cart-item-details {
+            color: #d1d5db;
+            font-size: 0.875rem;
+        }
+
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quantity-btn {
+            width: 2rem;
+            height: 2rem;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-display {
+            color: white;
+            width: 2rem;
+            text-align: center;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: #374151;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            width: 90%;
+            max-width: 60rem;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            color: white;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .label {
+            color: white;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .products-list {
+            max-height: 24rem;
+            overflow-y: auto;
+        }
+
+        .product-item {
+            background-color: #4b5563;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .product-inputs {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+
+        .product-row {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .empty-cart {
+            color: #9ca3af;
+            text-align: center;
+            padding: 1rem;
+        }
+    </style>
 </head>
 <body>
-  <div class="overlay"></div>
-  <div class="particles" id="particles"></div>
-  <div class="floating-hearts" id="floatingHearts"></div>
-  
-  <div class="container">
-    <div class="title">احبك امي</div>
-    
-    <div class="big-heart" id="bigHeart">
-      <!-- Hearts will be added by JavaScript -->
+    <!-- Header -->
+    <div class="header">
+        <div></div>
+        <button class="btn" onclick="openSettings()">الإعدادات</button>
     </div>
-    
-    <div class="message">اللهم ارزق أمي فوق عمرها عمرا وفوق صحتها عافيه ولا تحرمني من وجودها ورضاها واجعل سعادتها كظلها ترافقها دعوة</div>
-  </div>
-  
-  <!-- Audio element - removed autoplay -->
-  <audio id="background-music" loop>
-    <source src="ommy.mp3" type="audio/mp3">
-    متصفحك لا يدعم عنصر الصوت.
-  </audio>
-  
-  <script>
-    // DOM Elements
-    const bigHeart = document.getElementById('bigHeart');
-    const particles = document.getElementById('particles');
-    const floatingHearts = document.getElementById('floatingHearts');
-    const backgroundMusic = document.getElementById('background-music');
-    
-    // Audio handling
-    let audioPlayed = false;
 
-    // Play music on any user interaction
-    function playAudio() {
-      if (!audioPlayed) {
-        backgroundMusic.play()
-          .then(() => {
-            audioPlayed = true;
-          })
-          .catch(error => {
-            console.log('Playback prevented:', error);
-          });
-      }
-    }
+    <!-- Date and Time -->
+    <div class="datetime" id="datetime"></div>
 
-    // Add event listeners for various user interactions
-    ['click', 'touchstart', 'keydown', 'mousemove'].forEach(event => {
-      document.addEventListener(event, playAudio, { once: true });
-    });
+    <!-- Main Content -->
+    <div class="main-grid">
+        <!-- Invoice Section -->
+        <div class="section">
+            <div class="invoice-total" id="total">الإجمالي: 0.00 ريال</div>
+            <div class="invoice-library" id="libraryName">اسم المكتبة</div>
+            <div style="color: white; margin-bottom: 1rem;">تفاصيل الطالب:</div>
+            
+            <div class="cart-items" id="cartItems">
+                <div class="empty-cart">لا توجد منتجات في السلة</div>
+            </div>
+            
+            <button class="btn" style="width: 100%; padding: 0.75rem;" onclick="printInvoice()" id="printBtn" disabled>
+                طباعة
+            </button>
+        </div>
 
-    // Create hearts in a heart shape
-    function createHearts() {
-      // Clear existing hearts
-      bigHeart.innerHTML = '';
-      
-      // Create hearts in a heart shape
-      const numHearts = 40;
-      const heartRadius = 120;
-      
-      for (let i = 0; i < numHearts; i++) {
-        // Create heart element
-        const heart = document.createElement('div');
-        heart.classList.add('heart');
-        
-        // Position in a heart shape
-        const angle = (i / numHearts) * Math.PI * 2;
-        // Heart shape formula
-        const x = heartRadius * (16 * Math.pow(Math.sin(angle), 3)) / 16;
-        const y = heartRadius * (13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle)) / 16;
-        
-        // Center the heart
-        heart.style.left = `${x + 150}px`;
-        heart.style.top = `${-y + 150}px`;
-        
-        // Randomize animation properties
-        heart.style.animationDuration = `${Math.random() * 4 + 4}s`;
-        heart.style.animationDelay = `${Math.random() * 2}s`;
-        
-        // Randomize heart sizes
-        const size = Math.random() * 20 + 15;
-        heart.style.width = `${size}px`;
-        heart.style.height = `${size}px`;
-        
-        // Randomize heart colors
-        const hue = Math.floor(Math.random() * 30) + 340; // Red to pink
-        heart.style.backgroundColor = `hsl(${hue}, 100%, 50%)`;
-        heart.style.setProperty('--heart-color', `hsl(${hue}, 100%, 50%)`);
-        
-        // Add to container
-        bigHeart.appendChild(heart);
-      }
-    }
-    
-    // Create floating particles
-    function createParticles() {
-      particles.innerHTML = '';
-      
-      for (let i = 0; i < 50; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
-        
-        // Random position
-        particle.style.left = `${Math.random() * 100}%`;
-        
-        // Random size
-        const size = Math.random() * 8 + 2;
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        
-        // Random animation duration
-        const duration = Math.random() * 15 + 10;
-        particle.style.animationDuration = `${duration}s`;
-        
-        // Random delay
-        particle.style.animationDelay = `${Math.random() * 5}s`;
-        
-        // Random opacity
-        particle.style.opacity = `${Math.random() * 0.5 + 0.3}`;
-        
-        particles.appendChild(particle);
-      }
-    }
-    
-    // Create random floating hearts across the screen
-    function createFloatingHearts() {
-      floatingHearts.innerHTML = '';
-      
-      for (let i = 0; i < 60; i++) {
-        const heart = document.createElement('div');
-        heart.classList.add('floating-heart');
-        
-        // Random position
-        heart.style.left = `${Math.random() * 100}%`;
-        
-        // Random size
-        const size = Math.random() * 15 + 5;
-        heart.style.width = `${size}px`;
-        heart.style.height = `${size}px`;
-        
-        // Random animation duration
-        const duration = Math.random() * 15 + 10;
-        heart.style.animationDuration = `${duration}s`;
-        
-        // Random delay
-        heart.style.animationDelay = `${Math.random() * 10}s`;
-        
-        // Random horizontal movement
-        const translateX = (Math.random() * 200 - 100) + 'px';
-        heart.style.setProperty('--translate-x', translateX);
-        
-        // Random color
-        const hue = Math.floor(Math.random() * 40) + 330; // Red to pink
-        const saturation = Math.floor(Math.random() * 30) + 70; // 70-100%
-        const lightness = Math.floor(Math.random() * 20) + 70; // 70-90%
-        const opacity = Math.random() * 0.4 + 0.2; // 0.2-0.6
-        
-        heart.style.backgroundColor = `hsla(${hue}, ${saturation}%, ${lightness}%, ${opacity})`;
-        heart.style.setProperty('--heart-color', `hsla(${hue}, ${saturation}%, ${lightness}%, ${opacity})`);
-        
-        // Set the same color for pseudo-elements
-        const style = document.createElement('style');
-        style.textContent = `
-          .floating-heart:nth-child(${i+1})::before,
-          .floating-heart:nth-child(${i+1})::after {
-            background: hsla(${hue}, ${saturation}%, ${lightness}%, ${opacity});
-          }
-        `;
-        document.head.appendChild(style);
-        
-        floatingHearts.appendChild(heart);
-      }
-    }
-    
-    // Heart trail effect
-    function createHeartTrail(e) {
-      const trail = document.createElement('div');
-      trail.classList.add('heart-trail');
-      
-      // Position at cursor
-      trail.style.left = `${e.clientX}px`;
-      trail.style.top = `${e.clientY}px`;
-      
-      // Create mini hearts
-      for (let i = 0; i < 3; i++) {
-        const miniHeart = document.createElement('div');
-        miniHeart.classList.add('mini-heart');
-        
-        // Random position offset
-        miniHeart.style.left = `${Math.random() * 20 - 10}px`;
-        miniHeart.style.top = `${Math.random() * 20 - 10}px`;
-        
-        // Random size
-        const size = Math.random() * 10 + 5;
-        miniHeart.style.width = `${size}px`;
-        miniHeart.style.height = `${size}px`;
-        
-        // Random color
-        const hue = Math.floor(Math.random() * 30) + 340;
-        miniHeart.style.backgroundColor = `hsl(${hue}, 100%, 60%)`;
-        miniHeart.style.setProperty('--mini-heart-color', `hsl(${hue}, 100%, 60%)`);
-        
-        trail.appendChild(miniHeart);
-      }
-      
-      document.body.appendChild(trail);
-      
-      // Remove after animation completes
-      setTimeout(() => {
-        trail.remove();
-      }, 1000);
-    }
-    
-    // Mouse move event for heart trail
-    document.addEventListener('mousemove', (e) => {
-      // Limit the rate of heart creation
-      if (Math.random() > 0.9) {
-        createHeartTrail(e);
-      }
-    });
-    
-    // Touch move event for heart trail (mobile)
-    document.addEventListener('touchmove', (e) => {
-      if (Math.random() > 0.7) {
-        createHeartTrail({
-          clientX: e.touches[0].clientX,
-          clientY: e.touches[0].clientY
+        <!-- Calculator Section -->
+        <div class="section">
+            <div class="calculator-display">
+                <div class="calculator-screen">شاشة الآلة الحاسبة</div>
+                <div class="calculator-result" id="calcDisplay">0</div>
+            </div>
+            
+            <div class="calculator-grid">
+                <button class="calc-btn" onclick="inputOperation('+')">+</button>
+                <button class="calc-btn" onclick="inputNumber('9')">9</button>
+                <button class="calc-btn" onclick="inputNumber('8')">8</button>
+                <button class="calc-btn" onclick="inputNumber('7')">7</button>
+                
+                <button class="calc-btn" onclick="inputOperation('-')">-</button>
+                <button class="calc-btn" onclick="inputNumber('6')">6</button>
+                <button class="calc-btn" onclick="inputNumber('5')">5</button>
+                <button class="calc-btn" onclick="inputNumber('4')">4</button>
+                
+                <button class="calc-btn" onclick="inputOperation('*')">*</button>
+                <button class="calc-btn" onclick="inputNumber('3')">3</button>
+                <button class="calc-btn" onclick="inputNumber('2')">2</button>
+                <button class="calc-btn" onclick="inputNumber('1')">1</button>
+                
+                <button class="calc-btn" onclick="inputOperation('/')">/</button>
+                <button class="calc-btn" onclick="performCalculation()">=</button>
+                <button class="calc-btn" onclick="inputDot()">.</button>
+                <button class="calc-btn" onclick="inputNumber('0')">0</button>
+                
+                <button class="calc-btn calc-btn-clear" onclick="clearCalculator()">C</button>
+            </div>
+        </div>
+
+        <!-- Products Section -->
+        <div class="section">
+            <!-- Paper Section -->
+            <div class="paper-section">
+                <div class="section-title">الأوراق</div>
+                
+                <div class="paper-item">
+                    <div class="paper-label">ورق ملون</div>
+                    <div class="paper-input-group">
+                        <input type="number" class="input" placeholder="عدد الأوراق" id="coloredPaperCount">
+                        <button class="btn btn-success" onclick="addColoredPaper()">✓</button>
+                    </div>
+                    <div class="paper-price" id="coloredPaperPrice">السعر: 0.05 ريال للورقة الواحدة</div>
+                </div>
+                
+                <div class="paper-item">
+                    <div class="paper-label">ورق أسود</div>
+                    <div class="paper-input-group">
+                        <input type="number" class="input" placeholder="عدد الأوراق" id="regularPaperCount">
+                        <button class="btn btn-success" onclick="addRegularPaper()">✓</button>
+                    </div>
+                    <div class="paper-price" id="regularPaperPrice">السعر: 0.03 ريال للورقة الواحدة</div>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div>
+                <div class="section-title">المنتجات</div>
+                <div class="products-grid" id="productsGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">© 2025 نظام -MW- جميع الحقوق محفوظة</div>
+
+    <!-- Settings Modal -->
+    <div class="modal hidden" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">الإعدادات</div>
+                <button class="close-btn" onclick="closeSettings()">×</button>
+            </div>
+            
+            <div class="settings-grid">
+                <!-- General Settings -->
+                <div>
+                    <h3 style="color: white; font-size: 1.125rem; margin-bottom: 1rem;">الإعدادات العامة</h3>
+                    
+                    <div class="form-group">
+                        <label class="label">اسم المكتبة</label>
+                        <input type="text" class="input" id="settingsLibraryName" value="اسم المكتبة">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="label">سعر الورقة الملونة الواحدة (ريال)</label>
+                        <input type="number" step="0.01" class="input" id="settingsColoredPaperPrice" value="0.05">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="label">سعر الورقة العادية الواحدة (ريال)</label>
+                        <input type="number" step="0.01" class="input" id="settingsRegularPaperPrice" value="0.03">
+                    </div>
+                </div>
+
+                <!-- Products Settings -->
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h3 style="color: white; font-size: 1.125rem;">المنتجات</h3>
+                        <button class="btn" onclick="addProduct()">+ إضافة منتج</button>
+                    </div>
+                    
+                    <div class="products-list" id="productsList"></div>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                <button class="btn" style="flex: 1;" onclick="saveSettings()">حفظ التغييرات</button>
+                <button class="btn" style="flex: 1; background-color: #6b7280;" onclick="closeSettings()">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global Variables
+        let cartItems = [];
+        let settings = {
+            libraryName: "اسم المكتبة",
+            coloredPaperPrice: 0.05,
+            regularPaperPrice: 0.03,
+            products: [
+                { id: "product-1", name: "منتج 1", price: 5, icon: "📝" },
+                { id: "product-2", name: "منتج 2", price: 5, icon: "✏️" },
+                { id: "product-3", name: "منتج 3", price: 5, icon: "📚" },
+                { id: "product-4", name: "منتج 4", price: 5, icon: "📖" },
+                { id: "product-5", name: "منتج 5", price: 5, icon: "🖊️" },
+                { id: "product-6", name: "منتج 6", price: 5, icon: "📄" },
+                { id: "product-7", name: "منتج 7", price: 5, icon: "📋" },
+                { id: "product-8", name: "منتج 8", price: 5, icon: "🗂️" },
+                { id: "product-9", name: "منتج 9", price: 5, icon: "📌" },
+                { id: "product-10", name: "منتج 10", price: 5, icon: "📎" },
+                { id: "product-11", name: "منتج 11", price: 5, icon: "🖇️" },
+                { id: "product-12", name: "منتج 12", price: 5, icon: "📐" }
+            ]
+        };
+
+        // Calculator Variables
+        let calcDisplay = "0";
+        let previousValue = null;
+        let operation = null;
+        let waitingForOperand = false;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            updateDisplay();
+            renderProducts();
+            loadSettings();
         });
-      }
-    });
-    
-    // Initialize
-    window.addEventListener('load', () => {
-      createHearts();
-      createParticles();
-      createFloatingHearts();
-      
-      // Auto refresh hearts periodically
-      setInterval(() => {
-        createHearts();
-      }, 20000);
-      
-      // Auto refresh floating hearts periodically
-      setInterval(() => {
-        createFloatingHearts();
-      }, 30000);
-    });
-  </script>
+
+        // Date and Time Functions
+        function updateDateTime() {
+            const now = new Date();
+            const arabicDays = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+            
+            const dayName = arabicDays[now.getDay()];
+            const day = now.getDate();
+            const month = now.getMonth() + 1;
+            const year = now.getFullYear();
+            
+            const time = now.toLocaleTimeString("ar-SA", {
+                hour12: true,
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit"
+            });
+
+            document.getElementById('datetime').innerHTML = `
+                <div>${dayName} ${day} ${month} ${year}</div>
+                <div>${time}</div>
+            `;
+        }
+
+        // Calculator Functions
+        function inputNumber(num) {
+            if (waitingForOperand) {
+                calcDisplay = num;
+                waitingForOperand = false;
+            } else {
+                calcDisplay = calcDisplay === "0" ? num : calcDisplay + num;
+            }
+            updateCalcDisplay();
+        }
+
+        function inputOperation(nextOperation) {
+            const inputValue = parseFloat(calcDisplay);
+
+            if (previousValue === null) {
+                previousValue = inputValue;
+            } else if (operation) {
+                const currentValue = previousValue || 0;
+                const newValue = calculate(currentValue, inputValue, operation);
+                
+                calcDisplay = String(newValue);
+                previousValue = newValue;
+            }
+
+            waitingForOperand = true;
+            operation = nextOperation;
+            updateCalcDisplay();
+        }
+
+        function calculate(firstValue, secondValue, operation) {
+            switch (operation) {
+                case "+": return firstValue + secondValue;
+                case "-": return firstValue - secondValue;
+                case "*": return firstValue * secondValue;
+                case "/": return firstValue / secondValue;
+                case "=": return secondValue;
+                default: return secondValue;
+            }
+        }
+
+        function performCalculation() {
+            const inputValue = parseFloat(calcDisplay);
+
+            if (previousValue !== null && operation) {
+                const newValue = calculate(previousValue, inputValue, operation);
+                calcDisplay = String(newValue);
+                previousValue = null;
+                operation = null;
+                waitingForOperand = true;
+                updateCalcDisplay();
+            }
+        }
+
+        function clearCalculator() {
+            calcDisplay = "0";
+            previousValue = null;
+            operation = null;
+            waitingForOperand = false;
+            updateCalcDisplay();
+        }
+
+        function inputDot() {
+            if (waitingForOperand) {
+                calcDisplay = "0.";
+                waitingForOperand = false;
+            } else if (calcDisplay.indexOf(".") === -1) {
+                calcDisplay += ".";
+            }
+            updateCalcDisplay();
+        }
+
+        function updateCalcDisplay() {
+            document.getElementById('calcDisplay').textContent = calcDisplay;
+        }
+
+        // Paper Functions
+        function addColoredPaper() {
+            const count = parseInt(document.getElementById('coloredPaperCount').value);
+            if (count > 0) {
+                addToCart({
+                    id: 'colored-paper-' + Date.now(),
+                    name: `ورق ملون (${count} ورقة)`,
+                    price: settings.coloredPaperPrice * count,
+                    quantity: 1
+                });
+                document.getElementById('coloredPaperCount').value = '';
+            }
+        }
+
+        function addRegularPaper() {
+            const count = parseInt(document.getElementById('regularPaperCount').value);
+            if (count > 0) {
+                addToCart({
+                    id: 'regular-paper-' + Date.now(),
+                    name: `ورق أسود (${count} ورقة)`,
+                    price: settings.regularPaperPrice * count,
+                    quantity: 1
+                });
+                document.getElementById('regularPaperCount').value = '';
+            }
+        }
+
+        // Cart Functions
+        function addToCart(item) {
+            const existingItem = cartItems.find(cartItem => cartItem.id === item.id);
+            const quantityToAdd = item.quantity || 1;
+
+            if (existingItem) {
+                existingItem.quantity += quantityToAdd;
+            } else {
+                cartItems.push({ ...item, quantity: quantityToAdd });
+            }
+            updateDisplay();
+        }
+
+        function removeFromCart(id) {
+            cartItems = cartItems.filter(item => item.id !== id);
+            updateDisplay();
+        }
+
+        function updateQuantity(id, quantity) {
+            if (quantity <= 0) {
+                removeFromCart(id);
+                return;
+            }
+            const item = cartItems.find(item => item.id === id);
+            if (item) {
+                item.quantity = quantity;
+                updateDisplay();
+            }
+        }
+
+        function updateDisplay() {
+            const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            document.getElementById('total').textContent = `الإجمالي: ${total.toFixed(2)} ريال`;
+            document.getElementById('libraryName').textContent = settings.libraryName;
+            
+            const cartContainer = document.getElementById('cartItems');
+            const printBtn = document.getElementById('printBtn');
+            
+            if (cartItems.length === 0) {
+                cartContainer.innerHTML = '<div class="empty-cart">لا توجد منتجات في السلة</div>';
+                printBtn.disabled = true;
+            } else {
+                printBtn.disabled = false;
+                cartContainer.innerHTML = cartItems.map(item => `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-details">${item.price.toFixed(2)} ريال × ${item.quantity}</div>
+                        </div>
+                        <div class="cart-item-controls">
+                            <button class="btn btn-small quantity-btn" onclick="updateQuantity('${item.id}', ${item.quantity - 1})">-</button>
+                            <span class="quantity-display">${item.quantity}</span>
+                            <button class="btn btn-small quantity-btn" onclick="updateQuantity('${item.id}', ${item.quantity + 1})">+</button>
+                            <button class="btn btn-danger btn-small quantity-btn" onclick="removeFromCart('${item.id}')" style="margin-right: 0.5rem;">🗑️</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            // Update paper prices display
+            document.getElementById('coloredPaperPrice').textContent = `السعر: ${settings.coloredPaperPrice} ريال للورقة الواحدة`;
+            document.getElementById('regularPaperPrice').textContent = `السعر: ${settings.regularPaperPrice} ريال للورقة الواحدة`;
+        }
+
+        // Products Functions
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = settings.products.map(product => `
+                <button class="product-btn" onclick="addToCart({id: '${product.id}', name: '${product.name}', price: ${product.price}})">
+                    <div class="product-icon">${product.icon}</div>
+                    <div class="product-name">${product.name}</div>
+                    <div class="product-price">${product.price} ريال</div>
+                </button>
+            `).join('');
+        }
+
+        // Print Function
+        function printInvoice() {
+            const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const printContent = `
+                <div style="font-family: Arial, sans-serif; direction: rtl; text-align: right; padding: 20px;">
+                    <h2 style="text-align: center; margin-bottom: 20px;">${settings.libraryName}</h2>
+                    <hr style="margin: 20px 0;">
+                    <h3>تفاصيل الطلب:</h3>
+                    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #000;">
+                                <th style="padding: 10px; text-align: right;">المنتج</th>
+                                <th style="padding: 10px; text-align: center;">الكمية</th>
+                                <th style="padding: 10px; text-align: center;">السعر</th>
+                                <th style="padding: 10px; text-align: center;">المجموع</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${cartItems.map(item => `
+                                <tr style="border-bottom: 1px solid #ccc;">
+                                    <td style="padding: 8px;">${item.name}</td>
+                                    <td style="padding: 8px; text-align: center;">${item.quantity}</td>
+                                    <td style="padding: 8px; text-align: center;">${item.price.toFixed(2)} ريال</td>
+                                    <td style="padding: 8px; text-align: center;">${(item.price * item.quantity).toFixed(2)} ريال</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <hr style="margin: 20px 0;">
+                    <h3 style="text-align: center;">الإجمالي: ${total.toFixed(2)} ريال</h3>
+                    <p style="text-align: center; margin-top: 30px; font-size: 12px;">
+                        تاريخ الطباعة: ${new Date().toLocaleDateString("ar-SA")} - ${new Date().toLocaleTimeString("ar-SA", { hour12: true })}
+                    </p>
+                </div>
+            `;
+
+            const printWindow = window.open('', '_blank');
+            if (printWindow) {
+                printWindow.document.write(printContent);
+                printWindow.document.close();
+                printWindow.print();
+            }
+        }
+
+        // Settings Functions
+        function openSettings() {
+            loadSettingsForm();
+            document.getElementById('settingsModal').classList.remove('hidden');
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.add('hidden');
+        }
+
+        function loadSettingsForm() {
+            document.getElementById('settingsLibraryName').value = settings.libraryName;
+            document.getElementById('settingsColoredPaperPrice').value = settings.coloredPaperPrice;
+            document.getElementById('settingsRegularPaperPrice').value = settings.regularPaperPrice;
+            renderProductsList();
+        }
+
+        function renderProductsList() {
+            const list = document.getElementById('productsList');
+            list.innerHTML = settings.products.map((product, index) => `
+                <div class="product-item">
+                    <div class="product-inputs">
+                        <div class="product-row">
+                            <input type="text" class="input" placeholder="اسم المنتج" value="${product.name}" 
+                                   onchange="updateProductField(${index}, 'name', this.value)" style="flex: 1;">
+                            <button class="btn btn-danger" onclick="removeProduct(${index})">🗑️</button>
+                        </div>
+                        <div class="product-row">
+                            <input type="number" step="0.01" class="input" placeholder="السعر" value="${product.price}" 
+                                   onchange="updateProductField(${index}, 'price', parseFloat(this.value))" style="flex: 1;">
+                            <input type="text" class="input" placeholder="الأيقونة" value="${product.icon}" 
+                                   onchange="updateProductField(${index}, 'icon', this.value)" style="width: 5rem;">
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addProduct() {
+            const newProduct = {
+                id: `product-${Date.now()}`,
+                name: "منتج جديد",
+                price: 5,
+                icon: "📦"
+            };
+            settings.products.push(newProduct);
+            renderProductsList();
+        }
+
+        function removeProduct(index) {
+            settings.products.splice(index, 1);
+            renderProductsList();
+        }
+
+        function updateProductField(index, field, value) {
+            settings.products[index][field] = value;
+        }
+
+        function saveSettings() {
+            settings.libraryName = document.getElementById('settingsLibraryName').value;
+            settings.coloredPaperPrice = parseFloat(document.getElementById('settingsColoredPaperPrice').value);
+            settings.regularPaperPrice = parseFloat(document.getElementById('settingsRegularPaperPrice').value);
+            
+            localStorage.setItem('librarySettings', JSON.stringify(settings));
+            updateDisplay();
+            renderProducts();
+            closeSettings();
+        }
+
+        function loadSettings() {
+            const saved = localStorage.getItem('librarySettings');
+            if (saved) {
+                settings = JSON.parse(saved);
+                updateDisplay();
+                renderProducts();
+            }
+        }
+    </script>
 </body>
 </html>
