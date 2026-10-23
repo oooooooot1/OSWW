@@ -1,906 +1,184 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حاتم</title>
-    <link rel="icon" href="72.png" type="image/png">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #1f2937;
-            color: white;
-            padding: 1rem;
-            direction: rtl;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .btn {
-            background-color: #14b8a6;
-            color: white;
-            border: none;
-            padding: 0.5rem 1.5rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s;
-        }
-
-        .btn:hover {
-            background-color: #0f766e;
-        }
-
-        .btn:disabled {
-            background-color: #6b7280;
-            cursor: not-allowed;
-        }
-
-        .btn-small {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.875rem;
-        }
-
-        .btn-danger {
-            background-color: #dc2626;
-        }
-
-        .btn-danger:hover {
-            background-color: #b91c1c;
-        }
-
-        .btn-success {
-            background-color: #16a34a;
-        }
-
-        .btn-success:hover {
-            background-color: #15803d;
-        }
-
-        .datetime {
-            text-align: right;
-            margin-bottom: 1.5rem;
-            color: #fbbf24;
-        }
-
-        .datetime div {
-            font-size: 1.125rem;
-            font-weight: bold;
-        }
-
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 1.5rem;
-        }
-
-        @media (max-width: 1024px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .section {
-            background-color: #374151;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-        }
-
-        .section-title {
-            font-size: 1.125rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        /* Calculator Styles */
-        .calculator-display {
-            background-color: #000;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .calculator-screen {
-            color: white;
-            font-size: 1.125rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .calculator-result {
-            color: white;
-            font-size: 1.5rem;
-            font-family: monospace;
-        }
-
-        .calculator-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0.5rem;
-        }
-
-        .calc-btn {
-            background-color: #14b8a6;
-            color: white;
-            border: none;
-            padding: 0.75rem;
-            border-radius: 0.25rem;
-            cursor: pointer;
-            font-size: 1.25rem;
-            height: 3rem;
-        }
-
-        .calc-btn:hover {
-            background-color: #0f766e;
-        }
-
-        .calc-btn-clear {
-            grid-column: span 4;
-        }
-
-        /* Paper Section */
-        .paper-section {
-            margin-bottom: 1rem;
-        }
-
-        .paper-item {
-            margin-bottom: 1rem;
-        }
-
-        .paper-label {
-            color: white;
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .paper-input-group {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .input {
-            background-color: #4b5563;
-            color: white;
-            border: 1px solid #6b7280;
-            padding: 0.5rem;
-            border-radius: 0.25rem;
-            flex: 1;
-        }
-
-        .paper-price {
-            font-size: 0.75rem;
-            color: #9ca3af;
-            margin-top: 0.25rem;
-        }
-
-        /* Products Grid */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.75rem;
-        }
-
-        .product-btn {
-            background-color: #4b5563;
-            color: white;
-            border: none;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            height: 5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s;
-        }
-
-        .product-btn:hover {
-            background-color: #6b7280;
-        }
-
-        .product-icon {
-            font-size: 1.5rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .product-name {
-            font-size: 0.75rem;
-        }
-
-        .product-price {
-            font-size: 0.75rem;
-            color: #10b981;
-        }
-
-        /* Invoice */
-        .invoice-total {
-            color: #10b981;
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-
-        .invoice-library {
-            color: #10b981;
-            font-size: 1.125rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-
-        .cart-items {
-            max-height: 15rem;
-            overflow-y: auto;
-            margin-bottom: 1.5rem;
-        }
-
-        .cart-item {
-            background-color: #4b5563;
-            border-radius: 0.5rem;
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cart-item-info {
-            flex: 1;
-        }
-
-        .cart-item-name {
-            color: white;
-            font-weight: 500;
-        }
-
-        .cart-item-details {
-            color: #d1d5db;
-            font-size: 0.875rem;
-        }
-
-        .cart-item-controls {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .quantity-btn {
-            width: 2rem;
-            height: 2rem;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .quantity-display {
-            color: white;
-            width: 2rem;
-            text-align: center;
-        }
-
-        /* Modal */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-
-        .modal-content {
-            background-color: #374151;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            width: 90%;
-            max-width: 60rem;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-title {
-            color: white;
-            font-size: 1.25rem;
-            font-weight: bold;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        .settings-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-
-        @media (max-width: 768px) {
-            .settings-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .label {
-            color: white;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        .products-list {
-            max-height: 24rem;
-            overflow-y: auto;
-        }
-
-        .product-item {
-            background-color: #4b5563;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .product-inputs {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 0.75rem;
-        }
-
-        .product-row {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 2rem;
-            color: #9ca3af;
-            font-size: 0.875rem;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .empty-cart {
-            color: #9ca3af;
-            text-align: center;
-            padding: 1rem;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090d18">
+<title>مشروع إعادة بناء الذات | 2027—2031</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Orbitron:wght@500;600;700&display=swap');
+:root{--bg:#080c16;--panel:#101727;--panel2:#141f32;--line:#26344b;--text:#edf3ff;--muted:#9aa9c0;--gold:#f2c66d;--cyan:#6ee7f5;--green:#74e0a2;--pink:#d7a0ff;--shadow:0 18px 60px #0005}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 85% 0%,#1c2c4c 0,transparent 35%),radial-gradient(ellipse at 0% 45%,#132b35 0,transparent 30%),var(--bg);color:var(--text);font-family:'IBM Plex Sans Arabic',Tahoma,sans-serif;line-height:1.8}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.14;background-image:linear-gradient(#60718d22 1px,transparent 1px),linear-gradient(90deg,#60718d22 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,#000,transparent 80%);z-index:-1}
+a{color:inherit}.wrap{width:min(1200px,calc(100% - 32px));margin:auto}.topbar{display:flex;justify-content:space-between;align-items:center;padding:22px 0;gap:12px}.brand{display:flex;gap:12px;align-items:center;font-weight:700;letter-spacing:.2px}.brand-mark{display:grid;place-items:center;width:44px;height:44px;border:1px solid #f2c66d77;border-radius:13px;color:var(--gold);font-family:Orbitron,sans-serif;background:#f2c66d12}.eyebrow{color:var(--cyan);font-size:.78rem;letter-spacing:2px;font-family:Orbitron,sans-serif;direction:ltr;text-align:right}.top-actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#101827;color:var(--text);padding:9px 14px;border-radius:10px;cursor:pointer;font:inherit;font-size:.86rem;transition:.2s}.btn:hover{border-color:var(--gold);transform:translateY(-1px)}.btn.gold{background:var(--gold);color:#15120a;border-color:var(--gold);font-weight:700}
+.hero{position:relative;overflow:hidden;border:1px solid #53647d66;border-radius:28px;padding:clamp(26px,5vw,60px);background:linear-gradient(120deg,#121d30f2,#0c1321f2 65%,#1c2437f2);box-shadow:var(--shadow)}
+.hero:after{content:"2031";position:absolute;left:-20px;bottom:-65px;font:700 clamp(100px,22vw,250px) Orbitron,sans-serif;color:#ffffff06;pointer-events:none}.hero-content{position:relative;z-index:1;max-width:760px}.tag{display:inline-flex;align-items:center;gap:8px;color:var(--gold);border:1px solid #f2c66d55;background:#f2c66d0d;padding:5px 12px;border-radius:999px;font-size:.8rem}.hero h1{font-size:clamp(2rem,5.5vw,4.2rem);line-height:1.25;margin:18px 0 12px;letter-spacing:-1px}.hero h1 span{color:var(--gold)}.hero p{color:#bdc9dc;max-width:650px;margin:0 0 24px}.hero-meta{display:flex;gap:10px;flex-wrap:wrap}.meta-pill{padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:#ffffff05;color:#dce6f7;font-size:.88rem}.meta-pill strong{color:var(--cyan);margin-inline-start:5px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0 28px}.stat{background:linear-gradient(145deg,#121c2d,#0e1523);border:1px solid var(--line);padding:18px;border-radius:17px}.stat small{color:var(--muted);display:block}.stat strong{display:block;font-size:1.7rem;font-family:Orbitron,sans-serif;direction:ltr;text-align:right;margin:3px 0;color:var(--gold)}.stat .sub{font-size:.78rem;color:#8d9cb3}
+.progress-wrap{margin-top:18px}.progress-label{display:flex;justify-content:space-between;color:#b8c6da;font-size:.84rem;margin-bottom:7px}.progress{height:8px;border-radius:50px;background:#263247;overflow:hidden}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--gold));border-radius:50px;transition:width .35s}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:38px 0 15px}.section-head h2{margin:0;font-size:1.45rem}.section-head p{margin:3px 0 0;color:var(--muted);font-size:.9rem}.section-kicker{font:500 .72rem Orbitron,sans-serif;letter-spacing:1.5px;color:var(--cyan);direction:ltr}
+.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.year{position:relative;text-align:center;border:1px solid var(--line);border-radius:14px;padding:15px 8px;background:#101827;cursor:pointer;color:var(--muted);transition:.2s}.year b{display:block;font:600 1.15rem Orbitron,sans-serif;direction:ltr}.year small{font-size:.75rem}.year.active,.year:hover{border-color:var(--gold);background:#f2c66d12;color:var(--text)}.year.active b{color:var(--gold)}
+.navchips{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 24px}.chip{padding:8px 13px;border:1px solid var(--line);border-radius:999px;background:#0e1522;color:#b7c5d9;cursor:pointer;font:inherit;font-size:.85rem}.chip.active,.chip:hover{border-color:#6ee7f5aa;color:var(--cyan);background:#6ee7f50c}
+.category{margin:18px 0 26px;scroll-margin-top:20px}.cat-title{display:flex;align-items:center;gap:12px;margin-bottom:12px}.cat-icon{width:43px;height:43px;display:grid;place-items:center;border:1px solid #6ee7f555;background:#6ee7f510;border-radius:13px;font-size:1.25rem}.cat-title h3{margin:0;font-size:1.15rem}.cat-title p{margin:0;color:var(--muted);font-size:.8rem}.goal-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.goal{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);background:linear-gradient(135deg,#111a2a,#0c1320);border-radius:14px;padding:15px;min-height:75px;transition:.2s}.goal:hover{border-color:#536783}.goal.done{border-color:#74e0a255;background:linear-gradient(135deg,#10261f,#0d1820)}.goal input{appearance:none;flex:0 0 21px;width:21px;height:21px;border:1.5px solid #63738c;border-radius:6px;margin:4px 0 0;cursor:pointer;position:relative;background:#0b1220}.goal input:checked{background:var(--green);border-color:var(--green)}.goal input:checked:after{content:"✓";position:absolute;color:#07160d;font-weight:900;inset:-2px 0 0;text-align:center;line-height:21px}.goal .goal-text{flex:1}.goal .goal-text span{display:block}.goal.done .goal-text span{text-decoration:line-through;color:#90b6a3}.goal small{display:block;color:var(--muted);font-size:.73rem;margin-top:3px}.secret{border:1px solid #d7a0ff55;background:linear-gradient(135deg,#1b152b,#111726);border-radius:18px;padding:20px;margin-top:25px}.secret h3{margin:0 0 4px;color:var(--pink)}.secret p{margin:0;color:var(--muted);font-size:.88rem}.secret-lines{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px}.secret-line{height:44px;border:1px dashed #d7a0ff44;border-radius:9px;background:#d7a0ff06}
+.reflection{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.note{border:1px solid var(--line);background:#101827;border-radius:15px;padding:17px}.note h4{margin:0 0 8px}.note p{margin:0;color:var(--muted);font-size:.85rem}.quote{border-right:3px solid var(--gold);padding:4px 15px;color:#dce5f3;margin:24px 0;font-size:1.02rem}.footer{border-top:1px solid var(--line);margin-top:44px;padding:22px 0 35px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:.8rem}.footer strong{color:var(--gold)}.empty{padding:20px;text-align:center;color:var(--muted);display:none}
+@media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}.goal-grid{grid-template-columns:1fr}.timeline{gap:5px}.year{padding:12px 4px}.year small{font-size:.65rem}.reflection{grid-template-columns:1fr}.secret-lines{grid-template-columns:1fr}.topbar{align-items:flex-start}.brand{font-size:.9rem}.top-actions .btn{padding:7px 9px;font-size:.75rem}.hero{border-radius:20px}.section-head{align-items:start;flex-direction:column}}
+@media print{body{background:white;color:#111}.topbar,.navchips,.top-actions,.btn{display:none!important}.hero,.stat,.goal,.year,.note,.secret{background:white!important;color:#111;border-color:#bbb;box-shadow:none}.hero p,.stat small,.stat .sub,.section-head p,.goal small,.note p,.footer{color:#555}.goal-grid{grid-template-columns:1fr 1fr}.hero:after{display:none}}
+</style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="header">
-        <div></div>
-        <button class="btn" onclick="openSettings()">الإعدادات</button>
-    </div>
-
-    <!-- Date and Time -->
-    <div class="datetime" id="datetime"></div>
-
-    <!-- Main Content -->
-    <div class="main-grid">
-        <!-- Invoice Section -->
-        <div class="section">
-            <div class="invoice-total" id="total">الإجمالي: 0.00 ريال</div>
-            <div class="invoice-library" id="libraryName">اسم المكتبة</div>
-            <div style="color: white; margin-bottom: 1rem;">تفاصيل الطالب:</div>
-            
-            <div class="cart-items" id="cartItems">
-                <div class="empty-cart">لا توجد منتجات في السلة</div>
-            </div>
-            
-            <button class="btn" style="width: 100%; padding: 0.75rem;" onclick="printInvoice()" id="printBtn" disabled>
-                طباعة
-            </button>
-        </div>
-
-        <!-- Calculator Section -->
-        <div class="section">
-            <div class="calculator-display">
-                <div class="calculator-screen">شاشة الآلة الحاسبة</div>
-                <div class="calculator-result" id="calcDisplay">0</div>
-            </div>
-            
-            <div class="calculator-grid">
-                <button class="calc-btn" onclick="inputOperation('+')">+</button>
-                <button class="calc-btn" onclick="inputNumber('9')">9</button>
-                <button class="calc-btn" onclick="inputNumber('8')">8</button>
-                <button class="calc-btn" onclick="inputNumber('7')">7</button>
-                
-                <button class="calc-btn" onclick="inputOperation('-')">-</button>
-                <button class="calc-btn" onclick="inputNumber('6')">6</button>
-                <button class="calc-btn" onclick="inputNumber('5')">5</button>
-                <button class="calc-btn" onclick="inputNumber('4')">4</button>
-                
-                <button class="calc-btn" onclick="inputOperation('*')">*</button>
-                <button class="calc-btn" onclick="inputNumber('3')">3</button>
-                <button class="calc-btn" onclick="inputNumber('2')">2</button>
-                <button class="calc-btn" onclick="inputNumber('1')">1</button>
-                
-                <button class="calc-btn" onclick="inputOperation('/')">/</button>
-                <button class="calc-btn" onclick="performCalculation()">=</button>
-                <button class="calc-btn" onclick="inputDot()">.</button>
-                <button class="calc-btn" onclick="inputNumber('0')">0</button>
-                
-                <button class="calc-btn calc-btn-clear" onclick="clearCalculator()">C</button>
-            </div>
-        </div>
-
-        <!-- Products Section -->
-        <div class="section">
-            <!-- Paper Section -->
-            <div class="paper-section">
-                <div class="section-title">الأوراق</div>
-                
-                <div class="paper-item">
-                    <div class="paper-label">ورق ملون</div>
-                    <div class="paper-input-group">
-                        <input type="number" class="input" placeholder="عدد الأوراق" id="coloredPaperCount">
-                        <button class="btn btn-success" onclick="addColoredPaper()">✓</button>
-                    </div>
-                    <div class="paper-price" id="coloredPaperPrice">السعر: 0.05 ريال للورقة الواحدة</div>
-                </div>
-                
-                <div class="paper-item">
-                    <div class="paper-label">ورق أسود</div>
-                    <div class="paper-input-group">
-                        <input type="number" class="input" placeholder="عدد الأوراق" id="regularPaperCount">
-                        <button class="btn btn-success" onclick="addRegularPaper()">✓</button>
-                    </div>
-                    <div class="paper-price" id="regularPaperPrice">السعر: 0.03 ريال للورقة الواحدة</div>
-                </div>
-            </div>
-
-            <!-- Products Grid -->
-            <div>
-                <div class="section-title">المنتجات</div>
-                <div class="products-grid" id="productsGrid"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <div class="footer">© 2025 نظام -MW- جميع الحقوق محفوظة</div>
-
-    <!-- Settings Modal -->
-    <div class="modal hidden" id="settingsModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">الإعدادات</div>
-                <button class="close-btn" onclick="closeSettings()">×</button>
-            </div>
-            
-            <div class="settings-grid">
-                <!-- General Settings -->
-                <div>
-                    <h3 style="color: white; font-size: 1.125rem; margin-bottom: 1rem;">الإعدادات العامة</h3>
-                    
-                    <div class="form-group">
-                        <label class="label">اسم المكتبة</label>
-                        <input type="text" class="input" id="settingsLibraryName" value="اسم المكتبة">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="label">سعر الورقة الملونة الواحدة (ريال)</label>
-                        <input type="number" step="0.01" class="input" id="settingsColoredPaperPrice" value="0.05">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="label">سعر الورقة العادية الواحدة (ريال)</label>
-                        <input type="number" step="0.01" class="input" id="settingsRegularPaperPrice" value="0.03">
-                    </div>
-                </div>
-
-                <!-- Products Settings -->
-                <div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                        <h3 style="color: white; font-size: 1.125rem;">المنتجات</h3>
-                        <button class="btn" onclick="addProduct()">+ إضافة منتج</button>
-                    </div>
-                    
-                    <div class="products-list" id="productsList"></div>
-                </div>
-            </div>
-            
-            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-                <button class="btn" style="flex: 1;" onclick="saveSettings()">حفظ التغييرات</button>
-                <button class="btn" style="flex: 1; background-color: #6b7280;" onclick="closeSettings()">إلغاء</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Global Variables
-        let cartItems = [];
-        let settings = {
-            libraryName: "اسم المكتبة",
-            coloredPaperPrice: 0.05,
-            regularPaperPrice: 0.03,
-            products: [
-                { id: "product-1", name: "منتج 1", price: 5, icon: "📝" },
-                { id: "product-2", name: "منتج 2", price: 5, icon: "✏️" },
-                { id: "product-3", name: "منتج 3", price: 5, icon: "📚" },
-                { id: "product-4", name: "منتج 4", price: 5, icon: "📖" },
-                { id: "product-5", name: "منتج 5", price: 5, icon: "🖊️" },
-                { id: "product-6", name: "منتج 6", price: 5, icon: "📄" },
-                { id: "product-7", name: "منتج 7", price: 5, icon: "📋" },
-                { id: "product-8", name: "منتج 8", price: 5, icon: "🗂️" },
-                { id: "product-9", name: "منتج 9", price: 5, icon: "📌" },
-                { id: "product-10", name: "منتج 10", price: 5, icon: "📎" },
-                { id: "product-11", name: "منتج 11", price: 5, icon: "🖇️" },
-                { id: "product-12", name: "منتج 12", price: 5, icon: "📐" }
-            ]
-        };
-
-        // Calculator Variables
-        let calcDisplay = "0";
-        let previousValue = null;
-        let operation = null;
-        let waitingForOperand = false;
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
-            updateDisplay();
-            renderProducts();
-            loadSettings();
-        });
-
-        // Date and Time Functions
-        function updateDateTime() {
-            const now = new Date();
-            const arabicDays = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
-            
-            const dayName = arabicDays[now.getDay()];
-            const day = now.getDate();
-            const month = now.getMonth() + 1;
-            const year = now.getFullYear();
-            
-            const time = now.toLocaleTimeString("ar-SA", {
-                hour12: true,
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit"
-            });
-
-            document.getElementById('datetime').innerHTML = `
-                <div>${dayName} ${day} ${month} ${year}</div>
-                <div>${time}</div>
-            `;
-        }
-
-        // Calculator Functions
-        function inputNumber(num) {
-            if (waitingForOperand) {
-                calcDisplay = num;
-                waitingForOperand = false;
-            } else {
-                calcDisplay = calcDisplay === "0" ? num : calcDisplay + num;
-            }
-            updateCalcDisplay();
-        }
-
-        function inputOperation(nextOperation) {
-            const inputValue = parseFloat(calcDisplay);
-
-            if (previousValue === null) {
-                previousValue = inputValue;
-            } else if (operation) {
-                const currentValue = previousValue || 0;
-                const newValue = calculate(currentValue, inputValue, operation);
-                
-                calcDisplay = String(newValue);
-                previousValue = newValue;
-            }
-
-            waitingForOperand = true;
-            operation = nextOperation;
-            updateCalcDisplay();
-        }
-
-        function calculate(firstValue, secondValue, operation) {
-            switch (operation) {
-                case "+": return firstValue + secondValue;
-                case "-": return firstValue - secondValue;
-                case "*": return firstValue * secondValue;
-                case "/": return firstValue / secondValue;
-                case "=": return secondValue;
-                default: return secondValue;
-            }
-        }
-
-        function performCalculation() {
-            const inputValue = parseFloat(calcDisplay);
-
-            if (previousValue !== null && operation) {
-                const newValue = calculate(previousValue, inputValue, operation);
-                calcDisplay = String(newValue);
-                previousValue = null;
-                operation = null;
-                waitingForOperand = true;
-                updateCalcDisplay();
-            }
-        }
-
-        function clearCalculator() {
-            calcDisplay = "0";
-            previousValue = null;
-            operation = null;
-            waitingForOperand = false;
-            updateCalcDisplay();
-        }
-
-        function inputDot() {
-            if (waitingForOperand) {
-                calcDisplay = "0.";
-                waitingForOperand = false;
-            } else if (calcDisplay.indexOf(".") === -1) {
-                calcDisplay += ".";
-            }
-            updateCalcDisplay();
-        }
-
-        function updateCalcDisplay() {
-            document.getElementById('calcDisplay').textContent = calcDisplay;
-        }
-
-        // Paper Functions
-        function addColoredPaper() {
-            const count = parseInt(document.getElementById('coloredPaperCount').value);
-            if (count > 0) {
-                addToCart({
-                    id: 'colored-paper-' + Date.now(),
-                    name: `ورق ملون (${count} ورقة)`,
-                    price: settings.coloredPaperPrice * count,
-                    quantity: 1
-                });
-                document.getElementById('coloredPaperCount').value = '';
-            }
-        }
-
-        function addRegularPaper() {
-            const count = parseInt(document.getElementById('regularPaperCount').value);
-            if (count > 0) {
-                addToCart({
-                    id: 'regular-paper-' + Date.now(),
-                    name: `ورق أسود (${count} ورقة)`,
-                    price: settings.regularPaperPrice * count,
-                    quantity: 1
-                });
-                document.getElementById('regularPaperCount').value = '';
-            }
-        }
-
-        // Cart Functions
-        function addToCart(item) {
-            const existingItem = cartItems.find(cartItem => cartItem.id === item.id);
-            const quantityToAdd = item.quantity || 1;
-
-            if (existingItem) {
-                existingItem.quantity += quantityToAdd;
-            } else {
-                cartItems.push({ ...item, quantity: quantityToAdd });
-            }
-            updateDisplay();
-        }
-
-        function removeFromCart(id) {
-            cartItems = cartItems.filter(item => item.id !== id);
-            updateDisplay();
-        }
-
-        function updateQuantity(id, quantity) {
-            if (quantity <= 0) {
-                removeFromCart(id);
-                return;
-            }
-            const item = cartItems.find(item => item.id === id);
-            if (item) {
-                item.quantity = quantity;
-                updateDisplay();
-            }
-        }
-
-        function updateDisplay() {
-            const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            document.getElementById('total').textContent = `الإجمالي: ${total.toFixed(2)} ريال`;
-            document.getElementById('libraryName').textContent = settings.libraryName;
-            
-            const cartContainer = document.getElementById('cartItems');
-            const printBtn = document.getElementById('printBtn');
-            
-            if (cartItems.length === 0) {
-                cartContainer.innerHTML = '<div class="empty-cart">لا توجد منتجات في السلة</div>';
-                printBtn.disabled = true;
-            } else {
-                printBtn.disabled = false;
-                cartContainer.innerHTML = cartItems.map(item => `
-                    <div class="cart-item">
-                        <div class="cart-item-info">
-                            <div class="cart-item-name">${item.name}</div>
-                            <div class="cart-item-details">${item.price.toFixed(2)} ريال × ${item.quantity}</div>
-                        </div>
-                        <div class="cart-item-controls">
-                            <button class="btn btn-small quantity-btn" onclick="updateQuantity('${item.id}', ${item.quantity - 1})">-</button>
-                            <span class="quantity-display">${item.quantity}</span>
-                            <button class="btn btn-small quantity-btn" onclick="updateQuantity('${item.id}', ${item.quantity + 1})">+</button>
-                            <button class="btn btn-danger btn-small quantity-btn" onclick="removeFromCart('${item.id}')" style="margin-right: 0.5rem;">🗑️</button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-            
-            // Update paper prices display
-            document.getElementById('coloredPaperPrice').textContent = `السعر: ${settings.coloredPaperPrice} ريال للورقة الواحدة`;
-            document.getElementById('regularPaperPrice').textContent = `السعر: ${settings.regularPaperPrice} ريال للورقة الواحدة`;
-        }
-
-        // Products Functions
-        function renderProducts() {
-            const grid = document.getElementById('productsGrid');
-            grid.innerHTML = settings.products.map(product => `
-                <button class="product-btn" onclick="addToCart({id: '${product.id}', name: '${product.name}', price: ${product.price}})">
-                    <div class="product-icon">${product.icon}</div>
-                    <div class="product-name">${product.name}</div>
-                    <div class="product-price">${product.price} ريال</div>
-                </button>
-            `).join('');
-        }
-
-        // Print Function
-        function printInvoice() {
-            const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const printContent = `
-                <div style="font-family: Arial, sans-serif; direction: rtl; text-align: right; padding: 20px;">
-                    <h2 style="text-align: center; margin-bottom: 20px;">${settings.libraryName}</h2>
-                    <hr style="margin: 20px 0;">
-                    <h3>تفاصيل الطلب:</h3>
-                    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-                        <thead>
-                            <tr style="border-bottom: 2px solid #000;">
-                                <th style="padding: 10px; text-align: right;">المنتج</th>
-                                <th style="padding: 10px; text-align: center;">الكمية</th>
-                                <th style="padding: 10px; text-align: center;">السعر</th>
-                                <th style="padding: 10px; text-align: center;">المجموع</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${cartItems.map(item => `
-                                <tr style="border-bottom: 1px solid #ccc;">
-                                    <td style="padding: 8px;">${item.name}</td>
-                                    <td style="padding: 8px; text-align: center;">${item.quantity}</td>
-                                    <td style="padding: 8px; text-align: center;">${item.price.toFixed(2)} ريال</td>
-                                    <td style="padding: 8px; text-align: center;">${(item.price * item.quantity).toFixed(2)} ريال</td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                    <hr style="margin: 20px 0;">
-                    <h3 style="text-align: center;">الإجمالي: ${total.toFixed(2)} ريال</h3>
-                    <p style="text-align: center; margin-top: 30px; font-size: 12px;">
-                        تاريخ الطباعة: ${new Date().toLocaleDateString("ar-SA")} - ${new Date().toLocaleTimeString("ar-SA", { hour12: true })}
-                    </p>
-                </div>
-            `;
-
-            const printWindow = window.open('', '_blank');
-            if (printWindow) {
-                printWindow.document.write(printContent);
-                printWindow.document.close();
-                printWindow.print();
-            }
-        }
-
-        // Settings Functions
-        function openSettings() {
-            loadSettingsForm();
-            document.getElementById('settingsModal').classList.remove('hidden');
-        }
-
-        function closeSettings() {
-            document.getElementById('settingsModal').classList.add('hidden');
-        }
-
-        function loadSettingsForm() {
-            document.getElementById('settingsLibraryName').value = settings.libraryName;
-            document.getElementById('settingsColoredPaperPrice').value = settings.coloredPaperPrice;
-            document.getElementById('settingsRegularPaperPrice').value = settings.regularPaperPrice;
-            renderProductsList();
-        }
-
-        function renderProductsList() {
-            const list = document.getElementById('productsList');
-            list.innerHTML = settings.products.map((product, index) => `
-                <div class="product-item">
-                    <div class="product-inputs">
-                        <div class="product-row">
-                            <input type="text" class="input" placeholder="اسم المنتج" value="${product.name}" 
-                                   onchange="updateProductField(${index}, 'name', this.value)" style="flex: 1;">
-                            <button class="btn btn-danger" onclick="removeProduct(${index})">🗑️</button>
-                        </div>
-                        <div class="product-row">
-                            <input type="number" step="0.01" class="input" placeholder="السعر" value="${product.price}" 
-                                   onchange="updateProductField(${index}, 'price', parseFloat(this.value))" style="flex: 1;">
-                            <input type="text" class="input" placeholder="الأيقونة" value="${product.icon}" 
-                                   onchange="updateProductField(${index}, 'icon', this.value)" style="width: 5rem;">
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function addProduct() {
-            const newProduct = {
-                id: `product-${Date.now()}`,
-                name: "منتج جديد",
-                price: 5,
-                icon: "📦"
-            };
-            settings.products.push(newProduct);
-            renderProductsList();
-        }
-
-        function removeProduct(index) {
-            settings.products.splice(index, 1);
-            renderProductsList();
-        }
-
-        function updateProductField(index, field, value) {
-            settings.products[index][field] = value;
-        }
-
-        function saveSettings() {
-            settings.libraryName = document.getElementById('settingsLibraryName').value;
-            settings.coloredPaperPrice = parseFloat(document.getElementById('settingsColoredPaperPrice').value);
-            settings.regularPaperPrice = parseFloat(document.getElementById('settingsRegularPaperPrice').value);
-            
-            localStorage.setItem('librarySettings', JSON.stringify(settings));
-            updateDisplay();
-            renderProducts();
-            closeSettings();
-        }
-
-        function loadSettings() {
-            const saved = localStorage.getItem('librarySettings');
-            if (saved) {
-                settings = JSON.parse(saved);
-                updateDisplay();
-                renderProducts();
-            }
-        }
-    </script>
+<div class="wrap">
+<header class="topbar">
+  <div class="brand"><div class="brand-mark">OS</div><div><div>PROJECT: SELF REBUILD</div><div class="eyebrow">PERSONAL QUEST LOG</div></div></div>
+  <div class="top-actions"><button class="btn" id="resetBtn">إعادة ضبط التقدم</button><button class="btn" onclick="window.print()">طباعة / PDF</button><button class="btn gold" id="exportBtn">تصدير التقدم</button></div>
+</header>
+<main>
+<section class="hero">
+  <div class="hero-content">
+    <span class="tag">✦ المهمة الرئيسية · MAIN QUEST</span>
+    <h1>إعادة بناء الذات،<br><span>وصناعة النسخة التي أطمح أن أكونها.</span></h1>
+    <p>رحلة واعية لإعادة ترتيب الأفكار والأولويات، وبناء حياة متوازنة دينيًا وفكريًا وشخصيًا وعلميًا ومهنيًا وماليًا. ليست سباقًا مع الآخرين؛ بل التزام يومي بالتقدم.</p>
+    <div class="hero-meta"><div class="meta-pill">البداية <strong>2027</strong></div><div class="meta-pill">الموعد المستهدف <strong>2031</strong></div><div class="meta-pill">العمر المستهدف <strong>25 سنة</strong></div><div class="meta-pill">المدة <strong>5 سنوات</strong></div></div>
+    <div class="progress-wrap"><div class="progress-label"><span>التقدم الكلي في المهام</span><span id="heroPercent">0%</span></div><div class="progress"><span id="heroBar"></span></div></div>
+  </div>
+</section>
+<section class="stats">
+  <div class="stat"><small>إجمالي الأهداف</small><strong id="totalGoals">—</strong><div class="sub">المهام المسجلة في الخطة</div></div>
+  <div class="stat"><small>المهام المنجزة</small><strong id="doneGoals">0</strong><div class="sub">خطوات اكتملت</div></div>
+  <div class="stat"><small>المهام المتبقية</small><strong id="leftGoals">—</strong><div class="sub">ما زال أمامك وقت</div></div>
+  <div class="stat"><small>نسبة الإنجاز</small><strong id="overallPercent">0%</strong><div class="sub">تتحدث تلقائيًا</div></div>
+</section>
+<div class="section-head"><div><div class="section-kicker">ROADMAP / 2027—2031</div><h2>خريطة الرحلة</h2><p>اختر سنة لتحديد تركيزك، أو اعرض الرحلة كاملة.</p></div></div>
+<div class="timeline" id="timeline">
+  <button class="year" data-year="2027"><b>2027</b><small>التأسيس</small></button>
+  <button class="year" data-year="2028"><b>2028</b><small>بناء العادات</small></button>
+  <button class="year" data-year="2029"><b>2029</b><small>التطوير</small></button>
+  <button class="year" data-year="2030"><b>2030</b><small>التوسع</small></button>
+  <button class="year" data-year="2031"><b>2031</b><small>المراجعة والإنجاز</small></button>
+</div>
+<div class="navchips" id="filters">
+  <button class="chip active" data-filter="all">كل الأهداف</button>
+  <button class="chip" data-filter="faith">الدين والعلاقة مع الله</button>
+  <button class="chip" data-filter="self">الشخصية والرياضة</button>
+  <button class="chip" data-filter="culture">الثقافة والمعرفة</button>
+  <button class="chip" data-filter="skills">المهارات والبرمجة</button>
+  <button class="chip" data-filter="languages">اللغات</button>
+  <button class="chip" data-filter="social">العلاقات</button>
+  <button class="chip" data-filter="finance">المال والثروة</button>
+  <button class="chip" data-filter="mw">شركة MW</button>
+</div>
+<div id="goalSections">
+<section class="category" data-category="faith"><div class="cat-title"><div class="cat-icon">☾</div><div><h3>أولًا: الدين والعلاقة مع الله</h3><p>الأساس الذي أريد أن أبني عليه حياتي</p></div></div><div class="goal-grid">
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>المحافظة على ديني والالتزام بالعبادات</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>حفظ القرآن الكريم وإتقان تلاوته</span></div></label>
+</div></section>
+<section class="category" data-category="self"><div class="cat-title"><div class="cat-icon">⚔</div><div><h3>بناء الشخصية وتطوير التفكير</h3><p>تكوين شخصية متزنة ومسؤولة</p></div></div><div class="goal-grid">
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>إعادة بناء ذاتي وترتيب أفكاري وأهدافي من الأساس</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>العودة إلى ممارسة الرياضة بانتظام</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>تحسين طريقة تفكيري وتطوير قدرتي على التحليل والاستنتاج</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>أن أصبح إنسانًا هادئًا ومتزنًا، قادرًا على التحكم في انفعالاته والتعامل مع المواقف بعقلانية</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>تطوير شخصيتي لأكون رجلًا يتحلى بالشرف والمروءة والمسؤولية، قدوتي النبي محمد ﷺ</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>أن أصبح إنسانًا مثقفًا ودبلوماسيًا، وأمتلك فهمًا عميقًا للسياسة والقدرة على التعامل مع المواقف بحكمة وحنكة</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>تطوير مهارات التواصل والتفاوض والإقناع واتخاذ القرارات</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>العمل على تحقيق الاستقرار المالي والشخصي الذي يؤهلني للزواج</span><small>هدف شخصي: الوصول إلى الاستقرار قبل سن الثلاثين وتكوين بيت وأسرة.</small></div></label>
+</div></section>
+<section class="category" data-category="culture"><div class="cat-title"><div class="cat-icon">⌘</div><div><h3>الثقافة والمعرفة العامة</h3><p>توسيع المدارك وفهم العالم</p></div></div><div class="goal-grid">
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>بناء ثقافة واسعة في مختلف المجالات</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>دراسة الرياضيات والحساب الذهني لتطوير سرعة الحساب ودقته</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>حفظ خريطة العالم والتعرف على الدول وعواصمها ومواقعها الجغرافية</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>دراسة التاريخ وفهم الأحداث التاريخية وتسلسلها وأسبابها ونتائجها</span></div></label>
+</div></section>
+<section class="category" data-category="skills"><div class="cat-title"><div class="cat-icon">⌨</div><div><h3>المهارات الشخصية والعملية</h3><p>أدوات تزيد من قدرتي وفرصي</p></div></div><div class="goal-grid">
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>تعلم الكتابة السريعة على لوحة المفاتيح، مع القدرة على الكتابة دون النظر إليها</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>تحسين خطي اليدوي وتطوير وضوحه وجماله</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>ابتكار توقيع شخصي خاص بي</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>تعلم المهارات الرقمية وتطوير قدراتي التقنية</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>اكتساب مهارات جديدة تساعدني على تطوير نفسي وزيادة فرصي المهنية</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>إتقان البرمجة وتطوير التطبيقات</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>إتقان البرامج التالية</span><small>DaVinci Resolve · CapCut · Android Studio · Autodesk Revit · D5 Render</small></div></label>
+</div>
+<div class="note" style="margin-top:12px"><h4>مسارات البرمجة والتطوير</h4><p><b>تطبيقات iPhone:</b> Swift، SwiftUI. &nbsp; <b>تطبيقات Android:</b> Kotlin، Java، Jetpack Compose.</p><p><b>تطوير الويب:</b> HTML، CSS، JavaScript، React. &nbsp; <b>اللغات والأساسيات:</b> Python، Visual Scripting، Kotlin، HTML.</p><p><b>تطبيقات النظامين:</b> Dart + Flutter، باستخدام قاعدة برمجية مشتركة لتطوير تطبيقات تعمل على Android وiPhone.</p></div>
+</section>
+<section class="category" data-category="languages"><div class="cat-title"><div class="cat-icon">文</div><div><h3>تعلم اللغات</h3><p>التواصل والوصول إلى مصادر معرفة أوسع</p></div></div><div class="goal-grid">
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>تعلم اللغة الإنجليزية</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>تعلم اللغة الصينية</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>تعلم اللغة الروسية</span></div></label>
+</div></section>
+<section class="category" data-category="social"><div class="cat-title"><div class="cat-icon">◎</div><div><h3>العلاقات الاجتماعية</h3><p>علاقات صحية وشبكة مهنية قوية</p></div></div><div class="goal-grid">
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>توسيع دائرة علاقاتي الاجتماعية والمهنية</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>تطوير مهارات التواصل والاستماع والحوار والإقناع</span></div></label>
+</div></section>
+<section class="category" data-category="finance"><div class="cat-title"><div class="cat-icon">◈</div><div><h3>الاستقرار المالي وبناء الثروة</h3><p>الاستقلال المالي وتعدد مصادر الدخل</p></div></div><div class="goal-grid">
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>ادخار مبلغ لا يقل عن 100,000 ريال</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>بناء عدة مصادر للدخل بدلًا من الاعتماد على مصدر واحد</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>تحقيق دخل ثابت يغطي احتياجاتي الأساسية</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>إنشاء مصادر دخل إضافية من المشاريع والأعمال الجانبية</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>بناء مصادر دخل قائمة على العوائد والاستثمارات</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>التعلم والتوسع في المجالات المالية والاستثمارية، بما يشمل الأسهم والتداول والبيتكوين</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>دراسة خيارات التمويل والقروض واستخدامها بطريقة مدروسة تتناسب مع قدرتي المالية</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>تطوير مهاراتي في إدارة الأموال والميزانية والادخار والاستثمار</span></div></label>
+</div></section>
+<section class="category" data-category="mw"><div class="cat-title"><div class="cat-icon">⬡</div><div><h3>بناء شركتي التقنية MW</h3><p>من فكرة إلى مشروع ناجح ومستدام</p></div></div><div class="goal-grid">
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>تأسيس شركة MW وتطويرها لتصبح مشروعًا ناجحًا ومستدامًا</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>استقطاب العملاء وبناء علاقات مهنية طويلة الأمد</span></div></label>
+<label class="goal"><input type="checkbox"><div class="goal-text"><span>العمل على تحويل الشركة إلى مصدر دخل رئيسي ومستدام</span></div></label>
+</div></section>
+</div>
+<div class="empty" id="emptyState">لا توجد أهداف في هذا العرض.</div>
+<section class="secret"><h3>◈ أهداف مخفية — سرية للغاية</h3><p>مساحة خاصة لأهداف لا ترغب في إظهارها ضمن القائمة العامة. اكتبها لنفسك في مكان آمن، أو أضفها لاحقًا عند الحاجة.</p><div class="secret-lines"><div class="secret-line"></div><div class="secret-line"></div><div class="secret-line"></div></div></section>
+<div class="section-head"><div><div class="section-kicker">CHECKPOINT</div><h2>تذكير الرحلة</h2></div></div>
+<div class="quote">الهدف ليس أن أصل إلى كل شيء دفعة واحدة؛ بل أن أتحرك كل يوم باتجاه الشخص الذي أريد أن أكونه.</div>
+<div class="reflection">
+<div class="note"><h4>المراحل الأساسية لإعادة بناء الذات</h4><p>الاعتراف بالألم بدل الهروب منه، وتقبل أن ما حدث أصبح جزءًا من الماضي، واستعادة الشعور بالأمان والاستقرار، وفهم تأثير التجارب على الأفكار والسلوك، والتعبير عن المشاعر بطريقة صحية، والتخلص من الشعور بالذنب أو لوم النفس، وإعادة بناء الثقة بالنفس تدريجيًا، ووضع حدود صحية في العلاقات، وحماية الاحتياجات النفسية، واستعادة الهوايات، وتطوير عادات يومية تدعم التعافي، وإعادة اكتشاف القيم والأهداف، وبناء علاقات أكثر صحة واتزانًا، وتحويل التجربة إلى مصدر وعي ونضج، وصناعة رؤية جديدة للحياة والمستقبل.</p></div>
+<div class="note"><h4>كيف تستخدم هذه الصفحة؟</h4><p>ضع علامة على الهدف عند إنجازه أو إحراز تقدم حقيقي فيه. تُحفظ العلامات تلقائيًا على هذا الجهاز والمتصفح. اختر سنة لتصفية الأهداف حسب مرحلة تركيزك، وصدّر نسخة من تقدمك للاحتفاظ بها.</p></div>
+</div>
+</main>
+<footer class="footer"><span><strong>SELF REBUILD PROJECT</strong> · إصدار شخصي</span><span>2027 — 2031 · خطوة ثابتة كل يوم</span></footer>
+</div>
+<script>
+const checks=[...document.querySelectorAll('.goal input')];
+const storageKey='selfRebuildGoals_v1';
+let activeFilter='all',activeYear='all';
+function save(){try{localStorage.setItem(storageKey,JSON.stringify(checks.map(c=>c.checked)))}catch(e){}}
+function update(){
+ const total=checks.length,done=checks.filter(c=>c.checked).length,left=total-done,pct=total?Math.round(done/total*100):0;
+ document.getElementById('totalGoals').textContent=total;
+ document.getElementById('doneGoals').textContent=done;
+ document.getElementById('leftGoals').textContent=left;
+ document.getElementById('overallPercent').textContent=pct+'%';
+ document.getElementById('heroPercent').textContent=pct+'%';
+ document.getElementById('heroBar').style.width=pct+'%';
+ checks.forEach(c=>c.closest('.goal').classList.toggle('done',c.checked));
+}
+try{const saved=JSON.parse(localStorage.getItem(storageKey)||'null');if(Array.isArray(saved))checks.forEach((c,i)=>c.checked=!!saved[i])}catch(e){}
+checks.forEach(c=>c.addEventListener('change',()=>{save();update()}));
+function filterGoals(){
+ let visible=0;
+ document.querySelectorAll('.category').forEach(section=>{
+   const show=activeFilter==='all'||section.dataset.category===activeFilter;
+   section.style.display=show?'':'none';if(show)visible++;
+ });
+ document.getElementById('emptyState').style.display=visible?'none':'block';
+}
+document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{
+ activeFilter=b.dataset.filter;
+ document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x===b));
+ filterGoals();
+}));
+document.querySelectorAll('[data-year]').forEach(b=>b.addEventListener('click',()=>{
+ const was=b.classList.contains('active');
+ document.querySelectorAll('[data-year]').forEach(x=>x.classList.remove('active'));
+ if(!was){b.classList.add('active');activeYear=b.dataset.year}else activeYear='all';
+ // The original document sets a five-year overall horizon, not a year-by-year allocation for each goal.
+ // Selecting a year therefore marks the chosen focus year without inventing goal deadlines.
+ document.querySelector('.section-head p').textContent=activeYear==='all'?'اختر سنة لتحديد تركيزك، أو اعرض الرحلة كاملة.':'سنة التركيز: '+activeYear+' — الأهداف معروضة دون إسناد مواعيد غير مذكورة في الخطة الأصلية.';
+}));
+document.getElementById('resetBtn').addEventListener('click',()=>{
+ if(confirm('هل تريد إعادة ضبط جميع علامات الإنجاز؟')){checks.forEach(c=>c.checked=false);save();update()}
+});
+document.getElementById('exportBtn').addEventListener('click',()=>{
+ const data={project:'إعادة بناء الذات 2027–2031',exportedAt:new Date().toLocaleDateString('ar-SA'),completed:checks.filter(c=>c.checked).map(c=>c.closest('.goal').querySelector('.goal-text span').textContent),remaining:checks.filter(c=>!c.checked).map(c=>c.closest('.goal').querySelector('.goal-text span').textContent)};
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='تقدم-إعادة-بناء-الذات.json';a.click();URL.revokeObjectURL(url);
+});
+update();filterGoals();
+</script>
 </body>
 </html>
